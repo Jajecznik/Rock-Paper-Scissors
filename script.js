@@ -1,3 +1,4 @@
+// getting computer choice, returns rock, paper or scissors
 function getComputerChoice() {
     let number = Math.floor(Math.random() * 3)
 
@@ -6,6 +7,7 @@ function getComputerChoice() {
     else return "scissors"
 }
 
+// one round of the game, returns array with result of the game and proper text
 function playRound(computerSelection, playerSelection) {
     playerSelection = playerSelection.toLowerCase()
 
@@ -26,15 +28,18 @@ function playRound(computerSelection, playerSelection) {
     else return [0, "DRAW! You both used a Scissors!"]
 }
 
+// playing full game (5 rounds), gives alert who won
 function game() {
     playerCounter = 0
     computerCounter = 0
 
+    // iterate through rounds
     for (let i = 0; i < 5; i++) {
         const computerSelection = getComputerChoice()
         const playerSelection = prompt("Choose rock, paper or scissors")
         let result = playRound(computerSelection, playerSelection)
         
+        // result[0] - game result, result[1] - proper text
         alert(result[1])
         playerCounter += result[0]
         computerCounter += -1 * result[0]
@@ -45,4 +50,5 @@ function game() {
     else alert("DRAW!")
 }
 
+// starting the game
 game()
