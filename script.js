@@ -12,42 +12,57 @@ function playRound(computerSelection, playerSelection) {
     playerSelection = playerSelection.toLowerCase()
 
     if (computerSelection === "rock") {
-        if (playerSelection === "rock") return [0, "DRAW! You both used a Rock!"]
-        else if (playerSelection === "paper") return [1, "You Win! Paper beats Rock!"]
-        else return [-1, "You Lose! Rock beats Scissors!"]
+        if (playerSelection === "rock") return [0, 0, "DRAW! You both used a Rock!"]
+        else if (playerSelection === "paper") return [1, 0, "You Win! Paper beats Rock!"]
+        else return [0, 1, "You Lose! Rock beats Scissors!"]
     }
 
     else if (computerSelection === "paper") {
-        if (playerSelection === "rock") return [-1, "You Lose! Paper beats Rock!"]
-        else if (playerSelection === "paper") return [0, "DRAW! You both used a Paper!"]
-        else return [1, "You Win! Scissors beats Paper!"]
+        if (playerSelection === "rock") return [0, 1, "You Lose! Paper beats Rock!"]
+        else if (playerSelection === "paper") return [0, 0, "DRAW! You both used a Paper!"]
+        else return [1, 0, "You Win! Scissors beats Paper!"]
     }
 
-    else if (playerSelection === "rock") return [1, "You Win! Rock beats Scissors!"]
-    else if (playerSelection === "paper") return [-1, "You Lose! Scissors beats Paper!"]
-    else return [0, "DRAW! You both used a Scissors!"]
+    else if (playerSelection === "rock") return [1, 0, "You Win! Rock beats Scissors!"]
+    else if (playerSelection === "paper") return [0, 1, "You Lose! Scissors beats Paper!"]
+    else return [0, 0, "DRAW! You both used a Scissors!"]
 }
 
 // playing full game (5 rounds), gives alert who won
 function game() {
-    playerCounter = 0
-    computerCounter = 0
+    let playerCounter = 0
+    let computerCounter = 0
+    let result = [0, 0, ""]
 
-    // iterate through rounds
-    for (let i = 0; i < 5; i++) {
-        const computerSelection = getComputerChoice()
-        const playerSelection = prompt("Choose rock, paper or scissors")
-        let result = playRound(computerSelection, playerSelection)
-        
-        // result[0] - game result, result[1] - proper text
-        alert(result[1])
-        playerCounter += result[0]
-        computerCounter += -1 * result[0]
-    }
+    let btns = document.querySelectorAll('.button')
+    let result0 = document.querySelector('.result0')
+    let result1 = document.querySelector('.result1')
+    let result2 = document.querySelector('.result2')
 
-    if (playerCounter > computerCounter) alert("You WON!")
-    else if (playerCounter < computerCounter) alert("You LOST!")
-    else alert("DRAW!")
+    buttons = Array.from(btns)
+ 
+    buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (computerCounter < 5 && playerCounter < 5) {
+                const computerSelection = getComputerChoice()
+
+                // result[0] - player points, result[1] - computer points, result[2] - proper text
+                result = playRound(computerSelection, btn.innerText)
+                playerCounter += result[0]
+                computerCounter += result[1]
+
+                result0.innerText = playerCounter.toString()
+                result1.innerText = computerCounter.toString()
+                result2.innerText = result[2]  
+            }
+            
+            if (computerCounter == 5 || playerCounter == 5) {
+                if (playerCounter > computerCounter) result2.innerText = "You WON!"
+                else if (playerCounter < computerCounter) result2.innerText = "You LOST!"
+                else result2.innerText = "DRAW!"
+            }  
+        })
+    });
 }
 
 // starting the game
